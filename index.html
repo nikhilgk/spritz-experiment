@@ -19,12 +19,16 @@
 					  <div class="navbar-inner">
 					    <div class="container">
 					<ul>
-					  	<li><a href="#tab1" data-toggle="tab">Instructions</a></li>
-						<li><a href="#tab2" data-toggle="tab">Essay 1</a></li>
-						<li><a href="#tab3" data-toggle="tab">Questions</a></li>
-						<li><a href="#tab4" data-toggle="tab">Essay 2</a></li>
-						<li><a href="#tab5" data-toggle="tab">Questions</a></li>
-						<li><a href="#tab6" data-toggle="tab">Submit</a></li>
+					  	<li><a href="#tab1" data-toggle="tab">Step 1</a></li>
+						<li><a href="#tab2" data-toggle="tab">Step 2</a></li>
+						<li><a href="#tab3" data-toggle="tab">Step 3</a></li>
+						<li><a href="#tab4" data-toggle="tab">Step 4</a></li>
+						<li><a href="#tab5" data-toggle="tab">Step 5</a></li>
+						<li><a href="#tab6" data-toggle="tab">Step 6</a></li>
+						<li><a href="#tab7" data-toggle="tab">Step 7</a></li>
+						<li><a href="#tab8" data-toggle="tab">Step 8</a></li>
+						<li><a href="#tab9" data-toggle="tab">Step 9</a></li>
+						<li><a href="#tab10" data-toggle="tab">Step 10</a></li>
 					</ul>
 					 </div>
 					  </div>
@@ -36,28 +40,57 @@
 					    <div class="tab-pane" id="tab1">
 					      Instruction text goes here. This tab is optinal.
 					    </div>
-					    <div class="tab-pane" id="tab2">
-					    	<iframe src="essay1.html" width="900" height="320" frameBorder="0" scrolling="no">Loading...</iframe>
+					    <div class="tab-pane" id="tab2"></div>
+					    <div class="tab-pane" id="tab3"></div>
+					    <div class="tab-pane" id="tab4"></div>
+					    <div class="tab-pane" id="tab5"></div>
+					    <div class="tab-pane" id="tab6"></div>
+					    <div class="tab-pane" id="tab7"></div>
+					    <div class="tab-pane" id="tab8"></div>
+						<div class="tab-pane" id="tab9">
+							Final Demographics
 					    </div>
-						<div class="tab-pane" id="tab3">
-							<iframe src="https://docs.google.com/a/nikhil.ws/forms/d/1Y-4CrpxVEKCjXl_jYK78bNJAEd3lwlNQGgVqlDqS-4M/viewform?embedded=true" width="760" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-					    </div>
-						<div class="tab-pane" id="tab4">
-					    	<iframe src="essay1.html" width="900" height="320" frameBorder="0" scrolling="no">Loading...</iframe>
-					    </div>
-						<div class="tab-pane" id="tab5">
-							<iframe src="https://docs.google.com/a/nikhil.ws/forms/d/1Y-4CrpxVEKCjXl_jYK78bNJAEd3lwlNQGgVqlDqS-4M/viewform?embedded=true" width="760" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-					    </div>
-						<div class="tab-pane" id="tab6">
-							<iframe src="https://docs.google.com/forms/d/1BP57nJf913OAwFuYqTgLgnwNU8XMMU4ON_O4cV-qnRM/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-							
-					    </div>
-						<ul class="pager wizard">
+						<div class="tab-pane" id="tab10">
+							Display Code
+					    </div>						
+					    <ul class="pager wizard">
 							<li class="previous first" style="display:none;"><a href="index.html#">First</a></li>
 							<li class="next last" style="display:none;"><a href="index.html#">Last</a></li>
 						  	<li class="next"><a href="index.html#">Next</a></li>
 						</ul>
 					</div>	
+
+					<div id="hiddenContent" style="display:none">
+						<div id="spIntro">
+							<div>Intro to Sprintz</div>
+						</div>
+						<div id="spPrep">
+							<div>Sprintz Trial</div>
+						</div>
+						<div id="noIntro">
+							<div>Reading Intro</div>
+						</div>
+						<div id="sp_Fun">
+							<div>Spritiz Actual</div>
+						</div>
+						<div id="no_Fun">
+							<div>Reading Actual</div>
+						</div>
+						<div id="qn_Fun">
+							<div>Spritz Questions</div>
+						</div>
+						<div id="sp_Sad">
+							<div>Spritiz Actual</div>
+						</div>
+						<div id="no_Sad">
+							<div>Reading Actual</div>
+						</div>
+						<div id="qn_Sad">
+							<div>Reading questions</div>
+						</div>
+
+					</div>
+
 				</div>
 				
 			</section>
@@ -66,6 +99,65 @@
     <script src="jquery-latest.js"></script>
     <script src="bootstrap.min.js"></script>
 	<script src="jquery.bootstrap.wizard.js"></script>
+	<script type="text/javascript">
+	  	var styles = ["Spritz", "Normal"]
+	  	var essays = ["Fun", "Sad"]
+	  	function getAllPages(styleId, essayId){
+	  		console.log("AAA")
+	  		var style = styles[styleId];
+	  		var essay = essays[essayId]
+	  		var pages = getPages(essay, style)
+	  		// console.log(style, essay)
+
+	  		style = randomExclude(styles, styleId);
+	  		essay = randomExclude(essays, essayId);
+	  		// console.log(style, essay)
+	  		pages = pages.concat(getPages(essay, style))
+	  		console.log(pages)
+	  		return pages
+	  	}
+
+	  	function getPages(essay, style){
+	  		if (style == "Spritz")
+		  		return ["spIntro", "spPrep", "sp_"+essay, "qn_"+essay];
+		  	else
+		  		return ["noIntro", "no_"+essay, "qn_"+essay];
+	  	}
+
+	  	function insertPages(pages){
+	  		for (var i=0; i< pages.length;i++){
+	  			$("#tab"+(i+2)).html($("#"+pages[i]))
+	  		}
+	  	}
+
+
+	  	function randomExclude(array, id){
+	  		var clone = array.slice(0);
+	  		clone.splice(id, 1);
+	  		clone = shuffle(clone);
+	  		return clone[0]
+	  	}
+
+		function shuffle(array) {
+		  var currentIndex = array.length, temporaryValue, randomIndex ;
+
+		  // While there remain elements to shuffle...
+		  while (0 !== currentIndex) {
+
+		    // Pick a remaining element...
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex -= 1;
+
+		    // And swap it with the current element.
+		    temporaryValue = array[currentIndex];
+		    array[currentIndex] = array[randomIndex];
+		    array[randomIndex] = temporaryValue;
+		  }
+
+		  return array;
+		}
+
+	</script>
 	<script>
 	$(document).ready(function() {
 	  	$('#rootwizard').bootstrapWizard({
@@ -81,7 +173,27 @@
 				return false;
 			}		
 		});	
+
+	  	//////
+	  	var firstStyle = Math.floor(Math.random() * styles.length)
+	  	var firstEssay = Math.floor(Math.random() * essays.length)
+	  		console.log("AAAAAAAAAAAAA")
+
+	  	var pages = getAllPages(firstStyle, firstEssay);
+	  	insertPages(pages);
+
+
+
+
+
+
+	  	//////
+
+
+
+
 	});	
 	</script>
+	<script src="http://localhost:35729/livereload.js"></script>
   </body>
 </html>
