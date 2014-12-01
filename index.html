@@ -516,12 +516,13 @@ input[type='text'], input:not([type]), textarea {
       </div>
       			</div>
 						<div class="tab-pane" id="tab10">
-							Your completion code is : <div class="well"><p class="lead" id="code"></p></div>
+<p>Thank you for participating in our study! Your code to indicate completion of this HIT is below; please paste it into the box in the open AMT HIT window to finish. Once you've pasted the code into the AMT HIT window, you may close this window.   </p>         
+							<p>Your completion code is : </p><div class="well"><p class="lead" id="code"></p></div>
 					    </div>						
 					    <ul class="pager wizard">
 							<li class="previous first" style="display:none;"><a href="index.html#">First</a></li>
 							<li class="next last" style="display:none;"><a href="index.html#">Last</a></li>
-						  	<li class="next"><a href="index.html#">Next</a></li>
+						  	<li class="next"><a href="index.html#" id="next-btn">Next</a></li>
 						</ul>
 					</div>	
 
@@ -565,7 +566,7 @@ input[type='text'], input:not([type]), textarea {
                        </label>
                        <ul class="ss-choices" role="radiogroup" aria-label="How many minutes of physical activity can improve behavior?  ">
                           <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1345817651" value="20 minutes" id="group_1345817651_1" role="radio" class="ss-q-radio" aria-label="20 minutes"></span>
-                             <span class="ss-choice-label">20 minutes</span>
+                             <span class="ss-choice-label">20</span>
                              </label>
                           </li>
                           <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1345817651" value="4" id="group_1345817651_2" role="radio" class="ss-q-radio" aria-label="4"></span>
@@ -573,11 +574,11 @@ input[type='text'], input:not([type]), textarea {
                              </label>
                           </li>
                           <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1345817651" value="40 minutes" id="group_1345817651_3" role="radio" class="ss-q-radio" aria-label="40 minutes"></span>
-                             <span class="ss-choice-label">40 minutes</span>
+                             <span class="ss-choice-label">40</span>
                              </label>
                           </li>
                           <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1345817651" value="10 minutes" id="group_1345817651_4" role="radio" class="ss-q-radio" aria-label="10 minutes"></span>
-                             <span class="ss-choice-label">10 minutes</span>
+                             <span class="ss-choice-label">10</span>
                              </label>
                           </li>
                        </ul>
@@ -819,15 +820,15 @@ input[type='text'], input:not([type]), textarea {
 				                             </label>
 				                          </li>
 				                          <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1408382408" value="The events that cause it are more traumatic." id="group_1408382408_2" role="radio" class="ss-q-radio" aria-label="The events that cause it are more traumatic."></span>
-				                             <span class="ss-choice-label">The events that cause it are more traumatic.</span>
+				                             <span class="ss-choice-label">The events that cause it are more traumatic and so takes time to heal.</span>
 				                             </label>
 				                          </li>
 				                          <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1408382408" value="Happiness is fleeting." id="group_1408382408_3" role="radio" class="ss-q-radio" aria-label="Happiness is fleeting."></span>
-				                             <span class="ss-choice-label">Happiness is fleeting.</span>
+				                             <span class="ss-choice-label">Happiness is fleeting but sadness is longer lasting.</span>
 				                             </label>
 				                          </li>
 				                          <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1408382408" value="Sadness has less importance than Happiness." id="group_1408382408_4" role="radio" class="ss-q-radio" aria-label="Sadness has less importance than Happiness."></span>
-				                             <span class="ss-choice-label">Sadness has less importance than Happiness.</span>
+				                             <span class="ss-choice-label">Sadness has more importance than Happiness as a survival mechanism.</span>
 				                             </label>
 				                          </li>
 				                       </ul>
@@ -1030,22 +1031,22 @@ input[type='text'], input:not([type]), textarea {
 				$('#rootwizard').find('.bar').css({width:$percent+'%'});
 			}, onNext: function(tab, navigation, index) {
 				if (pageNo==8 || (pageNo>0 && pages[pageNo-1].indexOf("qn")==0)){
-					formState = validateQn(pages[pageNo-1])
-					if(!formState){
-						alert("Please answer all questions")
-						return false
-					}
+          formState = validateQn(pages[pageNo-1])
+					// if(!formState){
+					// 	alert("Please answer all questions")
+					// 	return false
+					// }
 				}
 		        pageNo++;
 		        logInterval(pageNo)
 		        if (pageNo == 9){
 		          submit_form();
+              $("#next-btn").hide();
 		        }
 		        return true;
 		      },onTabClick: function(tab, navigation, index) {
 		        return false;
 		      }, onLast: function(tab, navigation, index) {
-						alert('last')
 						return false;
 			}		
 		});	
