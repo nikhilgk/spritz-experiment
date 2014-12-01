@@ -1032,10 +1032,10 @@ input[type='text'], input:not([type]), textarea {
 			}, onNext: function(tab, navigation, index) {
 				if (pageNo==8 || (pageNo>0 && pages[pageNo-1].indexOf("qn")==0)){
           formState = validateQn(pages[pageNo-1])
-					// if(!formState){
-					// 	alert("Please answer all questions")
-					// 	return false
-					// }
+					if(!formState){
+						alert("Please answer all questions")
+						return false
+					}
 				}
 		        pageNo++;
 		        logInterval(pageNo)
