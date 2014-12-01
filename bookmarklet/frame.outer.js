@@ -393,7 +393,7 @@ sq.pageScriptVersion = '0.3.0';
   loading.show();
   sq.pageContent = jtf.grabArticleText();
 
-  dom.injectStylesheet(sq.iframeQueryParams.host + '/bookmarklet/css/frame.outer.css');
+  dom.injectStylesheet('bookmarklet/css/frame.outer.css');
 
   // inject reader iframe
   _.extend(sq.iframeQueryParams, {
@@ -404,9 +404,8 @@ sq.pageScriptVersion = '0.3.0';
     onboarding: sq.demoText ? true : ''
   });
 
-  var iframeSrc = window.location.protocol +
-    sq.iframeQueryParams.host +
-    '/bookmarklet/views/iframe.html?' +
+  var iframeSrc = 
+    'bookmarklet/views/iframe.html?' +
     dom.toQueryString(sq.iframeQueryParams);
 
   sq.innerFrame = createIframe(iframeSrc, _.compose(
