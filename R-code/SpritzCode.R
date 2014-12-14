@@ -146,7 +146,6 @@ Spritz$SAD_A5 <- ifelse(grepl("Amste",Spritz$SAD_Q5), 4, Spritz$SAD_A5)
 table(Spritz$SAD_ANS5)
 table(Spritz$SAD_A5)
 
-
 # There should be no missing values in this section.
 # Each variable is set to -1 initially.
 # But there should remain no -1s after recoding
@@ -160,7 +159,7 @@ table(Spritz$PrimEng)
 
 # What is your gender?
 table(Spritz$Gender)
-# Is English your primary language?
+# Are you a female?
 # Female: 1 = Yes, 0 = No
 Spritz$Female <- -1
 Spritz$Female <- ifelse(grepl("Fema",Spritz$Gender), 1, Spritz$Female)
@@ -210,6 +209,7 @@ Spritz$readSci <- ifelse(grepl("Science and techn",Spritz$Reading), 1, 0)
 Spritz$readMag <- ifelse(grepl("Magazine articles",Spritz$Reading), 1, 0)
 Spritz$readProf <- ifelse(grepl("Professional doc",Spritz$Reading), 1, 0)
 Spritz$readNone <- ifelse(grepl("I don't read any",Spritz$Reading), 1, 0)
+table(Spritz$Reading)
 
 table(Spritz$readTM)
 table(Spritz$readBook)
@@ -300,7 +300,7 @@ SpritzMain <- subset(Spritz,select=-c(FUN_Q1,FUN_Q2,FUN_Q3,FUN_Q4,FUN_Q5,
                                       M1,M2,M_all))
 SpritzMain$FUN <- SpritzMain$FUN_ANS1 + SpritzMain$FUN_ANS2 + SpritzMain$FUN_ANS3 + SpritzMain$FUN_ANS4 + SpritzMain$FUN_ANS5
 SpritzMain$SAD <- SpritzMain$SAD_ANS1 + SpritzMain$SAD_ANS2 + SpritzMain$SAD_ANS3 + SpritzMain$SAD_ANS4 + SpritzMain$SAD_ANS5
-
+library("sqldf", lib.loc="/Library/Frameworks/R.framework/Versions/2.15/Resources/library")
 a1 <- sqldf("select a.*, a.FUN as Y, 0 as trt from SpritzMain a where firstNormal = 1 and firstFUN =1")
 a1$FS <- 'FUN'
 a2 <- sqldf("select a.*, a.SAD as Y, 1 as trt from SpritzMain a where firstNormal = 1 and firstFUN =1")
