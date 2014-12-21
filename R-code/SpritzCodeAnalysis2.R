@@ -111,4 +111,40 @@ ols <- function(form, data, robust=FALSE, cluster=NULL,digits=3){
   return(res1)
 }
 
+# ==================================
+# Analysis for Time outcome variable
+# ==================================
+
+#Univariate statistics
+stat.desc(SpritzMain2$Y_time)
+stat.desc(SpritzMain2$trt)
+t.test(Y_time ~ FS, data = SpritzMain2)
+t.test(Y_time ~ firstNormal, data = SpritzMain2)
+t.test(Y_time ~ trt, data = SpritzMain2)
+
+sqldf("select FS, TRT, avg(Y_time) from SpritzMain2 group by FS, TRT")
+
+# As with comprehension, no effect of whether the first article was normal or Spritz
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$firstNormal))
+
+# People took around 16s longer to read the SAD article
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$isSAD))
+
+# Using Spritz @ 260wpm shaved ~15s off reading time
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$trt))
+ols(Y_time ~ trt,SpritzMain2,cluster="Meta_code")
+
+# Accounting for the article differences, Spritz shaved off 20s. No interaction effects.
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$trt * SpritzMain2$isSAD))
+ols(Y_time ~ trt*isSAD,SpritzMain2,cluster="Meta_code")
+
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$trt * SpritzMain2$isSAD + SpritzMain2$firstNormal))
+
+summary(lm(SpritzMain2$Y_time ~ SpritzMain2$trt + SpritzMain2$isSAD+ SpritzMain2$firstNormal 
+           + SpritzMain2$SpritzExp + SpritzMain2$UsesGlasses + SpritzMain2$DegreeCode
+           + SpritzMain2$PrimEng + SpritzMain2$Female + SpritzMain2$RaceCode 
+           + SpritzMain2$readTM + SpritzMain2$readBook + SpritzMain2$readSci 
+           + SpritzMain2$readMag + SpritzMain2$readProf))
+
+
 

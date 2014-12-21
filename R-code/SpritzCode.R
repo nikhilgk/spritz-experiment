@@ -89,8 +89,10 @@ table(as.character(Spritz$FUN_Q3))
 Spritz$FUN_ANS3 <- ifelse(grepl("Dr. Brendo",Spritz$FUN_Q3), 1, 0)
 Spritz$FUN_A3 <- 0
 Spritz$FUN_A3 <- ifelse(grepl("Rosie Hale",Spritz$FUN_Q3), 1, Spritz$FUN_A3)
-Spritz$FUN_A3 <- ifelse(grepl("Dr. Charle",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
-Spritz$FUN_A3 <- ifelse(grepl("Dr Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
+# Spritz$FUN_A3 <- ifelse(grepl("Dr. Charle",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
+# Spritz$FUN_A3 <- ifelse(grepl("Dr Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
+Spritz$FUN_A3 <- ifelse(grepl("Dr. Spock",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
+Spritz$FUN_A3 <- ifelse(grepl("Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
 Spritz$FUN_A3 <- ifelse(grepl("Dr. Brendo",Spritz$FUN_Q3), 4, Spritz$FUN_A3)
 table(Spritz$FUN_ANS3)
 table(Spritz$FUN_A3)
@@ -315,8 +317,8 @@ library(stringr)
 SpritzMain <- subset(Spritz,select=-c(FUN_Q1,FUN_Q2,FUN_Q3,FUN_Q4,FUN_Q5,          
                                       SAD_Q1,SAD_Q2,SAD_Q3,SAD_Q4,SAD_Q5,          
                                       English,Gender,Race,Degree,Reading,
-                                      Glasses,SpritzAns,Comments,Metadata,
-                                      M1,M2,M_all))
+                                      Glasses,SpritzAns,Comments))
+#                                       Metadata,M1,M2,M_all))
 SpritzMain$FUN <- SpritzMain$FUN_ANS1 + SpritzMain$FUN_ANS2 + SpritzMain$FUN_ANS3 + SpritzMain$FUN_ANS4 + SpritzMain$FUN_ANS5
 SpritzMain$SAD <- SpritzMain$SAD_ANS1 + SpritzMain$SAD_ANS2 + SpritzMain$SAD_ANS3 + SpritzMain$SAD_ANS4 + SpritzMain$SAD_ANS5
 library("sqldf", lib.loc="/Library/Frameworks/R.framework/Versions/2.15/Resources/library")
@@ -352,4 +354,24 @@ c2 <- rbind (b3, b4)
 
 SpritzMain2 <- rbind(c1,c2) 
 rm(a1,a2,a3,a4,a5,a6,a7,a8,b1,b2,b3,b4,c1,c2)
+
+
+# Coding for time outcome variable
+# Gratuitous commenting since it'll be a one line assignment
+# firstNormal = 0  =>  Spritz time is Meta_04, Normal time is Meta_07
+# firstNormal = 1  =>  Spritz time is Meta_07, Normal time is Meta_03
+# trt = 0  =>  I want Normal time
+# trt = 1  =>  I want Spritz time
+# trt = 0 & firstNormal = 0  => Meta_07
+# trt = 0 & firstNormal = 1  => Meta_03
+# trt = 1 & firstNormal = 0  => Meta_04
+# trt = 1 & firstNormal = 1  => Meta_07
+SpritzMain2$Y_time <- (1-SpritzMain2$trt) * (1-SpritzMain2$firstNormal) * SpritzMain2$Meta_07 +
+                      (1-SpritzMain2$trt) * SpritzMain2$firstNormal * SpritzMain2$Meta_03 +
+                      SpritzMain2$trt * (1-SpritzMain2$firstNormal) * SpritzMain2$Meta_04 +
+                      SpritzMain2$trt * SpritzMain2$firstNormal * SpritzMain2$Meta_07
+  
+  
+
+
 
