@@ -1,0 +1,78 @@
+<!--JAVASCRIPT TO MAKE OUR TURKERS UNIQUE--><script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script><script type="text/javascript">
+(function(){
+    var ut_id = "87ba8964a7ee1cdfc0b2745bfad54f4e";
+    if (UTWorkerLimitReached(ut_id)) {
+        document.getElementById('mturk_form').style.display = 'none';
+        document.getElementsByTagName('body')[0].innerHTML = "You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.";
+    }
+})();
+</script><!-- HERE starts the HTML/CSS for the AMAZON Mechanical Turk HIT that workers will see -->
+<link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet" />
+<section class="container" id="SurveyLink" style="margin-bottom:15px; padding: 10px 10px; font-family: Verdana, Geneva, sans-serif; color:#333333; font-size:0.9em;">
+<div class="row col-xs-12 col-md-12"><!-- Instructions -->
+<div class="panel panel-primary">
+<div class="panel-heading"><strong>Instructions</strong></div>
+
+<div class="panel-body">
+<p dir="ltr" style="line-height:1.1;margin-top:0pt;margin-bottom:8pt;"><span id="docs-internal-guid-e1729669-f7ab-0230-2cb8-e4a529f88f0a"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">We are conducting an experiment on the efficacy of adaptive reading technology.</span></span></p>
+
+<p dir="ltr" style="line-height:1.1;margin-top:0pt;margin-bottom:8pt;"><span id="docs-internal-guid-e1729669-f7ab-0230-2cb8-e4a529f88f0a"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Estimated Time:</span></span></p>
+
+<p dir="ltr" style="line-height:1.1;margin-top:0pt;margin-bottom:8pt;"><span id="docs-internal-guid-e1729669-f7ab-0230-2cb8-e4a529f88f0a"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">This HIT should take between 10-15 minutes. </span></span></p>
+
+<div dir="ltr" style="line-height: 1.1; margin-top: 0pt; margin-bottom: 8pt;"><span id="docs-internal-guid-e1729669-f7ab-0230-2cb8-e4a529f88f0a"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Instructions:</span></span></div>
+
+<ol>
+	<li>
+	<div>After navigating to the survey link below, you will be asked to read two articles:</div>
+
+	<ul>
+		<li>
+		<div>One article will be read with a reading technology and one article will be read without a reading technology</div>
+		</li>
+		<li>
+		<div>Upon completing each article, you will be prompted to answer between 5-7 multiple choice questions pertaining to that article</div>
+		</li>
+	</ul>
+	</li>
+	<li>
+	<div>Please take the task seriously, and do your best to complete the tasks. <strong>Do not try to cheat!</strong> Your aim should be to answer the questions after each article to the best of your natural ability, based on what you can recall from each reading.</div>
+	</li>
+	<li>
+	<div>This HIT includes a short demographic survey. We are simply collecting this data to gain greater insight into the efficacy of this reading technology. All of the data we collect will be anonymized, and your AMT ID will only be used to make sure you do not take the experiment more than once!</div>
+	</li>
+	<li>
+	<div><strong>Make sure to leave this window open as you complete the survey.</strong> When you are finished, you will need to return to this page to paste the code into the box. We generate the code so it cannot be faked.</div>
+	</li>
+	<li>
+	<p>You may only take this experiment once! We will verify this by your AMT ID.</p>
+	</li>
+</ol>
+
+<p dir="ltr" style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline;line-height:1.15;margin-top:0pt;margin-bottom:0pt;">&nbsp;</p>
+
+<h4><span id="docs-internal-guid-e1729669-f7ab-0230-2cb8-e4a529f88f0a"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Thank you for participating in our study!</span></span></h4>
+</div>
+</div>
+<!-- End Instruction -->
+
+<table>
+	<tbody>
+		<tr>
+			<td><strong>Survey link:</strong></td>
+			<td><a href="http://nikhilgk.github.io/spritz-experiment/index.html#" style="color: rgb(17, 85, 204); font-family: arial, sans-serif; line-height: normal; background-color: rgb(255, 255, 255);" target="_blank">http://nikhilgk.github.io/<wbr />spritz-experiment/index.html#</a></td>
+		</tr>
+		<tr>
+			<td><strong>Provide the survey code here:</strong></td>
+			<td style="vertical-align: middle;"><input class="form-control" id="surveycode" name="surveycode" placeholder="e.g. 123456" type="text" /></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</section>
+<!-- close container section -->
+<style type="text/css">td {
+    font-size:1.0em;
+    padding:5px 5px;
+}
+</style>

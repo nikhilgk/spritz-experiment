@@ -1,47 +1,66 @@
 # This program reads Spritz survey responses in CSV fomat,
 # then recodes all the answers into variables that can then be analyzed.
 
-SpritzAll <- read.csv("~/Desktop/Spritz Survey (Responses) - Form Responses 1.csv")
-SpritzAll <- read.csv("C:/Users/Murat Aydogdu/Desktop/Spritz Survey (Responses) - Form Responses 1.csv")
+SpritzAll <- read.csv("~/Desktop/Responses2.csv")
+SpritzAll <- read.csv("C:/Users/Murat Aydogdu/Desktop/Responses2.csv")
+#SpritzAll <- read.csv("~/Desktop/Spritz Survey (Responses) - Form Responses 1.csv")
+#SpritzAll <- read.csv("C:/Users/Murat Aydogdu/Desktop/Spritz Survey (Responses) - Form Responses 1.csv")
+
 # table(SpritzAll$Timestamp)
 Spritz <- subset(SpritzAll, grepl("12/2",as.character(SpritzAll$Timestamp)))
 # take out iffy HITs, if needed: 1nlcj2, l02n0t, 8ed4bq, cgo7zp, xw5gdf, rofvta
-Spritz <- subset(Spritz, grepl("1nlcj2",as.character(Spritz$DATA)) == FALSE)
-Spritz <- subset(Spritz, grepl("l02n0t",as.character(Spritz$DATA)) == FALSE)
-Spritz <- subset(Spritz, grepl("8ed4bq",as.character(Spritz$DATA)) == FALSE)
-Spritz <- subset(Spritz, grepl("cgo7zp",as.character(Spritz$DATA)) == FALSE)
-Spritz <- subset(Spritz, grepl("xw5gdf",as.character(Spritz$DATA)) == FALSE)
-Spritz <- subset(Spritz, grepl("rofvta",as.character(Spritz$DATA)) == FALSE)
+Spritz <- Spritz[Spritz$Code != "1nlcj2" & Spritz$Code != "l02n0t" & Spritz$Code != "8ed4bq" &
+                   Spritz$Code != "cgo7zp" & Spritz$Code != "xw5gdf" & Spritz$Code != "rofvta",]
+#Spritz <- subset(Spritz, grepl("1nlcj2",as.character(Spritz$DATA)) == FALSE)
+#Spritz <- subset(Spritz, grepl("l02n0t",as.character(Spritz$DATA)) == FALSE)
+#Spritz <- subset(Spritz, grepl("8ed4bq",as.character(Spritz$DATA)) == FALSE)
+#Spritz <- subset(Spritz, grepl("cgo7zp",as.character(Spritz$DATA)) == FALSE)
+#Spritz <- subset(Spritz, grepl("xw5gdf",as.character(Spritz$DATA)) == FALSE)
+#Spritz <- subset(Spritz, grepl("rofvta",as.character(Spritz$DATA)) == FALSE)
 
 names(Spritz)
 #1. Rename column names for the response table
-colnames(Spritz)[2] <- "FUN_Q1"
-colnames(Spritz)[3] <- "FUN_Q2"
-colnames(Spritz)[4] <- "FUN_Q3"
-colnames(Spritz)[5] <- "FUN_Q4"
-colnames(Spritz)[6] <- "FUN_Q5"
-colnames(Spritz)[7] <- "SAD_Q1"
-colnames(Spritz)[8] <- "SAD_Q2"
-colnames(Spritz)[9] <- "SAD_Q3"
-colnames(Spritz)[10] <- "SAD_Q4"
-colnames(Spritz)[11] <- "SAD_Q5"
-colnames(Spritz)[12] <- "English"
-colnames(Spritz)[13] <- "Gender"
-colnames(Spritz)[14] <- "Race"
-colnames(Spritz)[15] <- "Age"
-colnames(Spritz)[16] <- "Degree"
-colnames(Spritz)[17] <- "Reading"
-colnames(Spritz)[18] <- "Glasses"
-colnames(Spritz)[19] <- "SpritzAns"
-colnames(Spritz)[20] <- "Comments"
-colnames(Spritz)[21] <- "Metadata"
+# Data is recoded to this naming scheme
+# colnames(Spritz)[2] <- "FUN_Q1"
+# colnames(Spritz)[3] <- "FUN_Q2"
+# colnames(Spritz)[4] <- "FUN_Q3"
+# colnames(Spritz)[5] <- "FUN_Q4"
+# colnames(Spritz)[6] <- "FUN_Q5"
+# colnames(Spritz)[7] <- "SAD_Q1"
+# colnames(Spritz)[8] <- "SAD_Q2"
+# colnames(Spritz)[9] <- "SAD_Q3"
+# colnames(Spritz)[10] <- "SAD_Q4"
+# colnames(Spritz)[11] <- "SAD_Q5"
+# colnames(Spritz)[12] <- "English"
+# colnames(Spritz)[13] <- "Gender"
+# colnames(Spritz)[14] <- "Race"
+# colnames(Spritz)[15] <- "Age"
+# colnames(Spritz)[16] <- "Degree"
+# colnames(Spritz)[17] <- "Reading"
+# colnames(Spritz)[18] <- "Glasses"
+# colnames(Spritz)[19] <- "SpritzAns"
+# colnames(Spritz)[20] <- "Comments"
+# colnames(Spritz)[21] <- "Metadata"
+colnames(Spritz)[21] <- "Meta_01"
+colnames(Spritz)[22] <- "Meta_02"
+colnames(Spritz)[23] <- "Meta_03"
+colnames(Spritz)[24] <- "Meta_04"
+colnames(Spritz)[25] <- "Meta_05"
+colnames(Spritz)[26] <- "Meta_06"
+colnames(Spritz)[27] <- "Meta_07"
+colnames(Spritz)[28] <- "Meta_08"
+colnames(Spritz)[29] <- "Meta_09"
+colnames(Spritz)[30] <- "Meta_firstStyle"
+colnames(Spritz)[31] <- "Meta_firstEssay"
+colnames(Spritz)[32] <- "Meta_code"
+
 
 # Recode answers to facilitate analysis
 # First: which article came first, and which article had Spritz?
 #"firstStyle":"Normal","firstEssay":"Fun"
-Spritz$firstNormal <- ifelse(grepl("Normal",Spritz$Metadata), 1, 0)
+Spritz$firstNormal <- ifelse(grepl("Normal",Spritz$Meta_firstStyle), 1, 0)
 table(Spritz$firstNormal)
-Spritz$firstFun <- ifelse(grepl(":\"Fun",Spritz$Metadata), 1, 0)
+Spritz$firstFun <- ifelse(grepl("Fun",Spritz$Meta_firstEssay), 1, 0)
 table(Spritz$firstFun)
 
 # ANS variables: 1 for True, = 0 for False
@@ -70,8 +89,10 @@ table(as.character(Spritz$FUN_Q3))
 Spritz$FUN_ANS3 <- ifelse(grepl("Dr. Brendo",Spritz$FUN_Q3), 1, 0)
 Spritz$FUN_A3 <- 0
 Spritz$FUN_A3 <- ifelse(grepl("Rosie Hale",Spritz$FUN_Q3), 1, Spritz$FUN_A3)
-Spritz$FUN_A3 <- ifelse(grepl("Dr. Charle",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
-Spritz$FUN_A3 <- ifelse(grepl("Dr Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
+# Spritz$FUN_A3 <- ifelse(grepl("Dr. Charle",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
+# Spritz$FUN_A3 <- ifelse(grepl("Dr Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
+Spritz$FUN_A3 <- ifelse(grepl("Dr. Spock",Spritz$FUN_Q3), 2, Spritz$FUN_A3)
+Spritz$FUN_A3 <- ifelse(grepl("Bayard ",Spritz$FUN_Q3), 3, Spritz$FUN_A3)
 Spritz$FUN_A3 <- ifelse(grepl("Dr. Brendo",Spritz$FUN_Q3), 4, Spritz$FUN_A3)
 table(Spritz$FUN_ANS3)
 table(Spritz$FUN_A3)
@@ -238,66 +259,66 @@ table(Spritz$SpritzExp)
 # Metadata
 library(stringr)
 # {"1":3502,"2":5514,"3":37743,"4":20804,"5":7321,"6":25530,"7":100950,"8":24942,"9":31629,"firstStyle":"Normal","firstEssay":"Fun","code":"w06233"}
-Spritz$M_all <- Spritz$Metadata
-Spritz$M1 <- (str_locate(pattern ='\"1\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_01 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"2\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_02 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"3\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_03 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"4\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_04 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"5\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_05 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"6\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_06 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"7\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_07 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"8\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_08 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"9\":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_09 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"firstStyle":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_firstStyle <- substr(Spritz$M_all, Spritz$M1+14, Spritz$M2-2)
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"firstEssay":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
-Spritz$Meta_firstEssay <- substr(Spritz$M_all, Spritz$M1+14, Spritz$M2-2)
-Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
-Spritz$M1 <- (str_locate(pattern ='\"code":',Spritz$M_all))
-Spritz$M2 <- (str_locate(pattern ='}',Spritz$M_all))
-Spritz$Meta_code <- substr(Spritz$M_all, Spritz$M1+8, Spritz$M2-2)
-names(Spritz)
+# Spritz$M_all <- Spritz$Metadata
+# Spritz$M1 <- (str_locate(pattern ='\"1\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_01 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"2\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_02 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"3\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_03 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"4\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_04 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"5\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_05 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"6\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_06 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"7\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_07 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"8\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_08 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"9\":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_09 <- as.integer(substr(Spritz$M_all, Spritz$M1+4, Spritz$M2-1))
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"firstStyle":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_firstStyle <- substr(Spritz$M_all, Spritz$M1+14, Spritz$M2-2)
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"firstEssay":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern =',',Spritz$M_all))
+# Spritz$Meta_firstEssay <- substr(Spritz$M_all, Spritz$M1+14, Spritz$M2-2)
+# Spritz$M_all <- substr(Spritz$M_all, Spritz$M2+1, 1000000)
+# Spritz$M1 <- (str_locate(pattern ='\"code":',Spritz$M_all))
+# Spritz$M2 <- (str_locate(pattern ='}',Spritz$M_all))
+# Spritz$Meta_code <- substr(Spritz$M_all, Spritz$M1+8, Spritz$M2-2)
+# names(Spritz)
 # Check to make sure the metadata got parsed correctly
-spr <- subset(Spritz,select=c(Metadata,Meta_01,Meta_02,Meta_03,Meta_04,Meta_05,
-                              Meta_06,Meta_07,Meta_08,Meta_09,
-                              Meta_code,Meta_firstStyle,Meta_firstEssay))
-rm(spr)
+# spr <- subset(Spritz,select=c(Metadata,Meta_01,Meta_02,Meta_03,Meta_04,Meta_05,
+#                               Meta_06,Meta_07,Meta_08,Meta_09,
+#                               Meta_code,Meta_firstStyle,Meta_firstEssay))
+# rm(spr)
 # This dataset has all the coded variables
 SpritzMain <- subset(Spritz,select=-c(FUN_Q1,FUN_Q2,FUN_Q3,FUN_Q4,FUN_Q5,          
                                       SAD_Q1,SAD_Q2,SAD_Q3,SAD_Q4,SAD_Q5,          
                                       English,Gender,Race,Degree,Reading,
-                                      Glasses,SpritzAns,Comments,Metadata,
-                                      M1,M2,M_all))
+                                      Glasses,SpritzAns,Comments))
+#                                       Metadata,M1,M2,M_all))
 SpritzMain$FUN <- SpritzMain$FUN_ANS1 + SpritzMain$FUN_ANS2 + SpritzMain$FUN_ANS3 + SpritzMain$FUN_ANS4 + SpritzMain$FUN_ANS5
 SpritzMain$SAD <- SpritzMain$SAD_ANS1 + SpritzMain$SAD_ANS2 + SpritzMain$SAD_ANS3 + SpritzMain$SAD_ANS4 + SpritzMain$SAD_ANS5
 library("sqldf", lib.loc="/Library/Frameworks/R.framework/Versions/2.15/Resources/library")
@@ -333,4 +354,24 @@ c2 <- rbind (b3, b4)
 
 SpritzMain2 <- rbind(c1,c2) 
 rm(a1,a2,a3,a4,a5,a6,a7,a8,b1,b2,b3,b4,c1,c2)
+
+
+# Coding for time outcome variable
+# Gratuitous commenting since it'll be a one line assignment
+# firstNormal = 0  =>  Spritz time is Meta_04, Normal time is Meta_07
+# firstNormal = 1  =>  Spritz time is Meta_07, Normal time is Meta_03
+# trt = 0  =>  I want Normal time
+# trt = 1  =>  I want Spritz time
+# trt = 0 & firstNormal = 0  => Meta_07
+# trt = 0 & firstNormal = 1  => Meta_03
+# trt = 1 & firstNormal = 0  => Meta_04
+# trt = 1 & firstNormal = 1  => Meta_07
+SpritzMain2$Y_time <- (1-SpritzMain2$trt) * (1-SpritzMain2$firstNormal) * SpritzMain2$Meta_07 +
+                      (1-SpritzMain2$trt) * SpritzMain2$firstNormal * SpritzMain2$Meta_03 +
+                      SpritzMain2$trt * (1-SpritzMain2$firstNormal) * SpritzMain2$Meta_04 +
+                      SpritzMain2$trt * SpritzMain2$firstNormal * SpritzMain2$Meta_07
+  
+  
+
+
 
