@@ -19,13 +19,13 @@ SpritzMain2$Y_time <- (1-SpritzMain2$trt) * (1-SpritzMain2$firstNormal) * Spritz
   SpritzMain2$trt * (1-SpritzMain2$firstNormal) * SpritzMain2$t4 +
   SpritzMain2$trt * SpritzMain2$firstNormal * SpritzMain2$t7
 
+SpritzMain2$Y_timeInSecs <- SpritzMain2$Y_time/1000
 SpritzMain2$Y_timeInMins <- SpritzMain2$Y_time/(1000*60)
 sad_words <- 458
 fun_words <- 345
 SpritzMain2$Y_wpm <- (SpritzMain2$isSAD * sad_words +
                         (1 - SpritzMain2$isSAD) * fun_words) / SpritzMain2$Y_timeInMins
 
-summary(SpritzMain2$Y_wpm)
 
 # Spritz experiment data analysis
 # Uses SpritzMain2 table: each subject has two observations
@@ -201,3 +201,72 @@ ggplot(data=SpritzMain2, aes(x=FSTRT, y=Y, fill=FSTRT)) +
         panel.border = element_blank(),
         legend.position = "none")+
   scale_fill_manual(values=(c('gold', 'gold3','cyan','cyan3')))
+
+
+
+###############################
+# Analysis for WPM Outcome
+###############################
+
+#Univariate statistics
+stat.desc(SpritzMain2$Y_timeInSecs)
+t.test(Y_timeInSecs ~ FS, data = SpritzMain2)
+t.test(Y_timeInSecs ~ firstNormal, data = SpritzMain2)
+t.test(Y_timeInSecs ~ trt, data = SpritzMain2)
+
+sqldf("select FS, TRT, avg(Y_timeInSecs) from SpritzMain2 group by FS, TRT")
+
+
+ols(Y_timeInSecs ~ trt,SpritzMain2,cluster="Code")
+summary(lm(Y_timeInSecs ~ trt,SpritzMain2))
+
+# There doesn't seem to be an effect of whether the first article was normal or Spritz
+summary(lm(Y_timeInSecs ~ firstNormal,SpritzMain2))
+
+# People have done worse with SAD article overall
+summary(lm(SpritzMain2$Y_timeInSecs ~ SpritzMain2$isSAD))
+
+cl <- function(fm, cluster){
+  require(sandwich, quietly = TRUE)
+  require(lmtest, quietly = TRUE)
+  M <- length(unique(cluster))
+  N <- length(cluster)
+  K <- fm$rank
+  dfc <- (M/(M-1))*((N-1)/(N-K))
+  uj <- apply(estfun(fm),2, function(x) tapply(x, cluster, sum));
+  vcovCL <- dfc*sandwich(fm, meat=crossprod(uj)/N)
+  coeftest(fm, vcovCL)
+}
+
+# 1: Basic effects
+model1_time <- lm(Y_timeInSecs ~ trt,SpritzMain2)
+cl(model1_time,SpritzMain2$Code)
+
+model2_time <- lm(Y_timeInSecs ~ isSAD, SpritzMain2)
+cl(model2_time,SpritzMain2$Code)
+
+model3_time <- lm(Y_timeInSecs ~ firstNormal, SpritzMain2)
+cl(model3_time,SpritzMain2$Code)
+
+# 2: Basic effects plus interactions
+model4_time <- lm(Y_timeInSecs ~ trt*isSAD, SpritzMain2)
+cl(model4_time,SpritzMain2$Code)
+
+model5_time <- lm(Y_timeInSecs ~ trt*firstNormal, SpritzMain2)
+cl(model5_time,SpritzMain2$Code)
+
+model6_time <- lm(Y_timeInSecs ~ trt*firstNormal*isSAD, SpritzMain2)
+cl(model6_time,SpritzMain2$Code)
+
+#3: All variables
+model7_time <- lm(Y_timeInSecs ~ trt*isSAD*firstNormal 
+               + Age 
+               + SpritzExp + UsesGlasses + DegreeCode
+               + PrimEng + Female + RaceCode 
+               + readTM + readBook + readSci 
+               + readMag + readProf, SpritzMain2)
+
+cl(model7_time,SpritzMain2$Code)
+
+
+
