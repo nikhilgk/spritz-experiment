@@ -370,8 +370,10 @@ SpritzMain2$Y_time <- (1-SpritzMain2$trt) * (1-SpritzMain2$firstNormal) * Spritz
                       (1-SpritzMain2$trt) * SpritzMain2$firstNormal * SpritzMain2$Meta_03 +
                       SpritzMain2$trt * (1-SpritzMain2$firstNormal) * SpritzMain2$Meta_04 +
                       SpritzMain2$trt * SpritzMain2$firstNormal * SpritzMain2$Meta_07
-  
-  
+
+SpritzMain2$Y_timeInMins <- SpritzMain2$Y_time/(1000*60)
+SpritzMain2$Y_wpm <- (SpritzMain2$isSAD * (sadWords) +
+                        (1 - SpritzMain2$isSAD) * (funWords)) / SpritzMain2$Y_timeInMins
 
 
 
