@@ -1,3 +1,32 @@
+# Load SpritzMain2.csv:
+SpritzMain2 <- read.csv("~/Desktop/SpritzMain2.csv")
+
+SpritzMain2$isSAD <- ifelse(SpritzMain2$FS == 'SAD', 1, 0)
+
+# Add variable for time on reading pages:
+# Coding for time outcome variable
+# Gratuitous commenting since it'll be a one line assignment
+# firstNormal = 0  =>  Spritz time is Meta_04, Normal time is Meta_07
+# firstNormal = 1  =>  Spritz time is Meta_07, Normal time is Meta_03
+# trt = 0  =>  I want Normal time
+# trt = 1  =>  I want Spritz time
+# trt = 0 & firstNormal = 0  => Meta_07
+# trt = 0 & firstNormal = 1  => Meta_03
+# trt = 1 & firstNormal = 0  => Meta_04
+# trt = 1 & firstNormal = 1  => Meta_07
+SpritzMain2$Y_time <- (1-SpritzMain2$trt) * (1-SpritzMain2$firstNormal) * SpritzMain2$t7 +
+  (1-SpritzMain2$trt) * SpritzMain2$firstNormal * SpritzMain2$t3 +
+  SpritzMain2$trt * (1-SpritzMain2$firstNormal) * SpritzMain2$t4 +
+  SpritzMain2$trt * SpritzMain2$firstNormal * SpritzMain2$t7
+
+SpritzMain2$Y_timeInMins <- SpritzMain2$Y_time/(1000*60)
+sad_words <- 458
+fun_words <- 345
+SpritzMain2$Y_wpm <- (SpritzMain2$isSAD * sad_words +
+                        (1 - SpritzMain2$isSAD) * fun_words) / SpritzMain2$Y_timeInMins
+
+summary(SpritzMain2$Y_wpm)
+
 # Spritz experiment data analysis
 # Uses SpritzMain2 table: each subject has two observations
 options(scipen=100)
@@ -71,7 +100,6 @@ t.test(Y ~ trt, data = SpritzMain2)
 
 sqldf("select FS, TRT, avg(Y) from SpritzMain2 group by FS, TRT")
 
-SpritzMain2$isSAD <- ifelse(SpritzMain2$FS == 'SAD', 1, 0)
 
 ols(Y ~ trt,SpritzMain2,cluster="Code")
 summary(lm(Y ~ trt,SpritzMain2))
